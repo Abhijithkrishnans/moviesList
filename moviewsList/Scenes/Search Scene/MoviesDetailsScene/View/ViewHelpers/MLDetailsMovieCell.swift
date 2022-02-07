@@ -65,7 +65,10 @@ extension MLDetailsMovieCell {
         guard let overview = model?.overview else {
             return
         }
-        lblDescription.text = overview
+        guard let title = model?.original_title else {
+            return
+        }
+        lblDescription.text = "\(title):\n\n\(overview)"
         
         /// Binding Details
         let rating = getRatingString(model)
