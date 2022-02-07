@@ -18,7 +18,6 @@ class MLFavoriteMovieCell: UICollectionViewCell {
         bg.layer.cornerRadius = 10
         bg.clipsToBounds = true
         bg.layer.borderWidth = 2
-//        bg.layer.borderColor = UIColor.SFThemeSelectionColor.cgColor
         return bg
     }()
     
@@ -39,7 +38,6 @@ class MLFavoriteMovieCell: UICollectionViewCell {
         bg.textAlignment = .center
         bg.numberOfLines = 0
         bg.textColor = .white
-        bg.text = "ABHI\nAmi"
         return bg
     }()
     lazy var stackView: UIStackView = {

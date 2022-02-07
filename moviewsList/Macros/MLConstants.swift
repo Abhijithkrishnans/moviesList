@@ -68,5 +68,8 @@ enum MLConstants {
         static let commonBorderWidth:CGFloat = 2
         static let ThemeHeaderTitleSize:CGFloat = 30
         static let ThemeSectionHeaderTitleSize:CGFloat = 20
+        
+        static let themeDetailsTitilesize:CGFloat = 12
+        static let themeDetailsValuesize:CGFloat = 18
     }
 }

@@ -79,7 +79,6 @@ extension MLMoviesListViewModel {
                 }
             },
               receiveValue: { [weak self] movies in
-                print(movies.count)
                 self?.resultsHandler(endpoint: endpoint, results: movies)
             })
             .store(in: &subscriptions)
@@ -125,7 +124,7 @@ extension MLMoviesListViewModel {
             if c1.rating != c2.rating {
                 return c1.rating ?? 0.0 > c2.rating ?? 0.0
             }else {
-                return c1.title ?? "" < c2.title ?? ""
+                return c1.title ?? "" > c2.title ?? ""
             }
         }
     }

@@ -40,6 +40,7 @@ class MLDetailsMovieCell: UITableViewCell {
         sv.addArrangedSubview(lblRating)
         return sv
     }()
+    //MARK: Initializers
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -50,50 +51,70 @@ class MLDetailsMovieCell: UITableViewCell {
         favBgView.addSubview(stackView, anchors: [.top(0),.leading(0),.trailing(0),.bottom(0)])
         
         self.contentView.backgroundColor = .black
-        bindData()
     }
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
+}
+//MARK: Convenience Initializers
+extension MLDetailsMovieCell {
+    func prepareCell(model: MLMoviesListModel?) {
+       bindData(model)
     }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-
 }
 extension MLDetailsMovieCell {
-    func bindData() {
-        // create attributed string
-        let ratingTitle = NSMutableAttributedString(string: "Rating\t",attributes: getAttributes(.white, "Futura-Bold", 12))
-        let ratingValue = "8,7"
-        let ratAttrString =  NSAttributedString(string: ratingValue, attributes: getAttributes(.white, "Futura", 18))
+    func bindData(_ model: MLMoviesListModel?) {
+        /// Binding Description
+        guard let overview = model?.overview else {
+            return
+        }
+        lblDescription.text = overview
+        
+        /// Binding Details
+        let rating = getRatingString(model)
+        let date = getDateString(model)
+        let language = getLanguageString(model)
+        rating.append(date)
+        rating.append(language)
+        lblRating.attributedText = rating
+    }
+    
+}
+//MARK: Details Binding Helpers
+extension MLDetailsMovieCell {
+    func getRatingString(_ model: MLMoviesListModel?) -> NSMutableAttributedString {
+        let ratingTitle = NSMutableAttributedString(string: "Rating\t",attributes: getAttributes(.white, MLConstants.commonFont.ThemeFontBold, MLConstants.sizeElements.themeDetailsTitilesize))
+        guard let rating = model?.rating else {
+            return NSMutableAttributedString()
+        }
+        let ratingValue = String(describing: rating)
+        let ratAttrString =  NSAttributedString(string: ratingValue, attributes: getAttributes(.white, MLConstants.commonFont.ThemeFont, MLConstants.sizeElements.themeDetailsValuesize))
         
         ratingTitle.append(ratAttrString)
         ratingTitle.append(NSAttributedString(string: "/10"))
+        return ratingTitle
+    }
+    func getDateString(_ model: MLMoviesListModel?) -> NSMutableAttributedString {
+        let dateTitle = NSMutableAttributedString(string: "\nLaunched on\t\t",attributes: getAttributes(.white, MLConstants.commonFont.ThemeFontBold, MLConstants.sizeElements.themeDetailsTitilesize))
+        guard let date = model?.release_date else {
+            return NSMutableAttributedString()
+        }
+        let dateValue = date
+        let dateAttrString =  NSAttributedString(string: dateValue, attributes: getAttributes(.white, MLConstants.commonFont.ThemeFont, MLConstants.sizeElements.themeDetailsValuesize))
         
-        let datetitleAttribute:[NSAttributedString.Key: Any] = [NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: UIFont(name: "Futura-Bold", size: 12)!]
-        let dateTitle = NSAttributedString(string: "\nLaunched on\t\t",attributes: datetitleAttribute)
-        let dateAttribute:[NSAttributedString.Key: Any] = [NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: UIFont(name: "Futura", size: 18)!]
-        let dateAttrString =  NSMutableAttributedString(string: "2021-08-11", attributes: dateAttribute)
-        ratingTitle.append(dateTitle)
-        ratingTitle.append(dateAttrString)
-    
+        dateTitle.append(dateAttrString)
+        return dateTitle
+    }
+    func getLanguageString(_ model: MLMoviesListModel?) -> NSMutableAttributedString {
+        let languageTitle = NSMutableAttributedString(string: "\nLanguage\t",attributes: getAttributes(.white, MLConstants.commonFont.ThemeFontBold, MLConstants.sizeElements.themeDetailsTitilesize))
+        guard let language = model?.original_language else {
+            return NSMutableAttributedString()
+        }
+        let languageValue = language
+        let languageAttrString =  NSAttributedString(string: languageValue, attributes: getAttributes(.white, MLConstants.commonFont.ThemeFont, MLConstants.sizeElements.themeDetailsValuesize))
         
-        let languageTitleAttribute:[NSAttributedString.Key: Any] = [NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: UIFont(name: "Futura-Bold", size: 12)!]
-        var languageTitle = NSAttributedString(string: "\nLanguage\t",attributes: languageTitleAttribute)
-        let languageAttribute:[NSAttributedString.Key: Any] = [NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: UIFont(name: "Futura", size: 18)!]
-        let languageAttrString =  NSAttributedString(string: "En", attributes: languageAttribute)
-        ratingTitle.append(languageTitle)
-        ratingTitle.append(languageAttrString)
-        
-        lblRating.attributedText = ratingTitle
+        languageTitle.append(languageAttrString)
+        return languageTitle
     }
     func getAttributes(_ color:UIColor,_ font:String,_ size:CGFloat) -> [NSAttributedString.Key: Any] {
-        return [NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: UIFont(name: font, size: 18)!]
+        return [NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: UIFont(name: font, size: size) ?? UIFont()]
     }
 }
 extension MLMoviesDetailsViewSceneView {

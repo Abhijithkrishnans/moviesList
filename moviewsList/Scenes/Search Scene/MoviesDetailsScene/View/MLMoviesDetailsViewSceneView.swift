@@ -62,7 +62,7 @@ class MLMoviesDetailsViewSceneView: UIViewController {
         
         view.backgroundColor = .SFBGThemeColor
         navigationController?.isNavigationBarHidden = false
-        title = "Movies Details"
+        title = "Movie Details"
         navigationController?.navigationBar.backgroundColor = .SFThemeColor
         navigationController?.navigationBar.barTintColor = .SFThemeColor
         navigationController?.navigationBar.tintColor = .white
@@ -122,10 +122,10 @@ extension MLMoviesDetailsViewSceneView {
         cell.prepareCell(FavoriteList: moviesList)
         return cell
     }
-    //Cell definitions
     private func getDetailsCell(_ indexPath:IndexPath,_ tableView:UITableView) -> MLDetailsMovieCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: MLDetailsMovieCell.typeName, for: indexPath) as! MLDetailsMovieCell
+        cell.prepareCell(model: moviesList?.first)
         return cell
     }
 }

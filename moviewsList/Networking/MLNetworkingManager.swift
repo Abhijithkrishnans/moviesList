@@ -17,7 +17,6 @@ class MLNetworking:MLNetworkingProtocol{
             let url = try endPoint.buildUrlString()
             let request = try endPoint.urlRequest(baseURL: url)
             let session = endPoint.configuration()
-            print(url)
             return session.dataTaskPublisher(for: request)
                 .retry(1)
                 .mapError{$0 as Error}

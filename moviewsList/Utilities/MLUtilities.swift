@@ -35,4 +35,18 @@ struct MLUtilities {
     }
 }
 
-
+// MARK: Date Formater Helpers
+extension MLUtilities {
+    func getDateFromString(datestring:String,dateformat:String)-> Date {
+        let dayTimePeriodFormatter = DateFormatter()
+        dayTimePeriodFormatter.dateFormat = dateformat//"yyyy-MM-dd hh:mm a"
+        let date = dayTimePeriodFormatter.date(from: datestring)
+        return date!
+    }
+    func getStringFromDate(datestring:NSDate,dateformat:String)-> String    {
+        let timeFormatter = DateFormatter()
+        timeFormatter.dateFormat = dateformat//"EE,d MMM yy h:mm a"
+        let timestring = timeFormatter.string(from: datestring as Date)
+        return timestring
+    }
+}
