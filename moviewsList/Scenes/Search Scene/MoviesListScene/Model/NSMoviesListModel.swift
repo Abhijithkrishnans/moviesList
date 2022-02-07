@@ -43,4 +43,5 @@ struct MLMoviesListModel:Codable{
     var rating: Double?
     var isWatched: Bool?
     var isSelected: Bool?
+    var isDetails: Bool?
 }

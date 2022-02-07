@@ -61,7 +61,19 @@ extension MLFavoritesCell {
 }
 //MARK: Common Helpers
 extension MLFavoritesCell {
+    func getCellAlignmentInsets(_ collectionView: UICollectionView,_ section: Int)-> UIEdgeInsets{
+        if moviesFavorites?[safeBound:section]?.isDetails == true  {
+            let totalCellWidth = 120 * collectionView.numberOfItems(inSection: 0)
+            let totalSpacingWidth = 5 * (collectionView.numberOfItems(inSection: 0) - 1)
 
+            let leftInset = (collectionView.layer.frame.size.width - CGFloat(totalCellWidth + totalSpacingWidth)) / 2
+            let rightInset = leftInset
+
+            return UIEdgeInsets(top: 0, left: leftInset, bottom: 0, right: rightInset)
+        }else{
+            return UIEdgeInsets.zero
+        }
+    }
 }
 // MARK: Collection delegates and datasource methods
 extension MLFavoritesCell: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
@@ -73,20 +85,10 @@ extension MLFavoritesCell: UICollectionViewDelegate, UICollectionViewDataSource,
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         return getFavoriteCell(indexPath, collectionView)
     }
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-//
-//        let totalCellWidth = 90 * collectionView.numberOfItems(inSection: 0)
-//        let totalSpacingWidth = 5 * (collectionView.numberOfItems(inSection: 0) - 1)
-//
-//        let leftInset = (collectionView.layer.frame.size.width - CGFloat(totalCellWidth + totalSpacingWidth)) / 2
-//        let rightInset = leftInset
-//
-//        return UIEdgeInsets(top: 0, left: leftInset, bottom: 0, right: rightInset)
-//
-//    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return getCellAlignmentInsets(collectionView, section)
+    }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        favoriteCellSelectedSubject.send(indexPath)
-        print("Selectedindex\(indexPath.item)")
         completion?(moviesFavorites?[indexPath.item])
     }
 }

@@ -36,21 +36,12 @@ class MLMoviesListViewModel: MLMoviesListProtocol {
     ///Data source for the Movies List table view.
     @Published var moviesList: [moviesListType] = [moviesListType]()
     @Published var favoriteList: [moviesListType] = [moviesListType]()
-
+    @Published var selectedList: [moviesListType] = [moviesListType]()
     
     // MARK: Input
     private var loadData: AnyPublisher<Void, Never> = PassthroughSubject<Void, Never>().eraseToAnyPublisher()
     
     // MARK: Output
-    var moviesFavorite: [MLMoviesListModel] {
-        favoriteList
-    }
-    var moviesWatched: [MLMoviesListModel] {
-        moviesList.filter{$0.isWatched == true}
-    }
-    var moviesToWatch: [MLMoviesListModel] {
-        moviesList.filter{$0.isWatched == false}
-    }
     @Published var isMovieSelected: Bool = false
     var reloadMoviesList: AnyPublisher<Result<Void, Error>, Never> {
         reloadMoviesListSubject.eraseToAnyPublisher()
@@ -88,6 +79,7 @@ extension MLMoviesListViewModel {
                 }
             },
               receiveValue: { [weak self] movies in
+                print(movies.count)
                 self?.resultsHandler(endpoint: endpoint, results: movies)
             })
             .store(in: &subscriptions)
@@ -111,7 +103,7 @@ extension MLMoviesListViewModel {
             clearMasterMovieList() /// Ensuring the array has cleared
             moviesList.append(contentsOf: getSortedList(movies: results)) /// Loading datasource
             injectSelectionProperty() /// Injecting convenience property for selection handling
-            self.reloadMoviesListSubject.send(.success(())) /// Feedback to View
+            self.reloadMoviesListSubject.send(completion:.finished) /// Feedback to View
             break
         case .fetchFavoriteList:
             self.extrackFavoriteList(favlist: results) /// Bifurcating Favorite list from master
@@ -161,6 +153,7 @@ extension MLMoviesListViewModel {
             }
             return movobj
         }
+        self.selectedList = self.moviesList.filter{$0.isSelected == true}
         /// Reloading Datasources
         self.moviesList = getSortedList(movies: self.moviesList)
         self.extrackFavoriteList(favlist: self.favoriteList)
@@ -169,5 +162,7 @@ extension MLMoviesListViewModel {
 
 
 extension MLMoviesListViewModel {
-    
+    func prepareMoviesDetailsView(_ selectedList:[MLMoviesListModel]?) -> UIViewController {
+        return DIContainer.bootstrapMoviesDetailsView(selectedList) as UIViewController
+    }
 }

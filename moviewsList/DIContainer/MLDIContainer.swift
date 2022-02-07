@@ -20,13 +20,12 @@ struct DIContainer {
         view.viewModel = viewModel
         return view
     }
-    static func bootstrapMoviesDetailsView() -> MLMoviesDetailsViewSceneView {
+    static func bootstrapMoviesDetailsView(_ moviesList:[MLMoviesListModel]?) -> MLMoviesDetailsViewSceneView {
         //MARK: Initialise components.
         let view = MLMoviesDetailsViewSceneView()
-        let viewModel = MLDetailsViewModel()
-
+        let viewModel = MLDetailsViewModel(moviesList)
         //MARK: link VM components.
-//        view.viewModel = viewModel
+        view.viewModel = viewModel
         return view
     }
 }

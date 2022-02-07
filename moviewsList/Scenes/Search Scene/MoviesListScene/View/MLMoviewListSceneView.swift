@@ -20,6 +20,7 @@ class MLMoviewListSceneView: UIViewController,UITableViewDelegate,UITableViewDat
     //MARK: DataSource Properties
     var moviesFavorite: [MLMoviesListModel]?
     var moviesAll: [MLMoviesListModel]?
+    var selectedList: [MLMoviesListModel]?
     
     var moviesWatched: [MLMoviesListModel] {
         moviesAll?.filter{$0.isWatched == true} ?? []
@@ -90,7 +91,6 @@ extension MLMoviewListSceneView {
         view.sd_imageIndicator?.stopAnimatingIndicator()
         switch result {
             case .success():
-            self.getFavorite()
             break
             case .failure(let error):
             UIAlertController.showAlert(title: MLConstants.errorMessage.badRequest, message: error.localizedDescription, cancelButtonTitle: MLConstants.fieldNames.Ok, otherButtons: [], preferredStyle: .alert, vwController: self) { action, index in
@@ -109,12 +109,12 @@ extension MLMoviewListSceneView {
         ///Binding Master Data
         viewModel?.reloadMoviesList
             .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { [weak self] _ in
+            .sink(receiveCompletion: { [weak self] resu in
                 self?.view.sd_imageIndicator?.stopAnimatingIndicator()
-                self?.moviesListMasterTable.reloadData()
+                self?.getFavorite()///Fetching Favorites
             },
             receiveValue: { [weak self] (Result) in
-                self?.handleResult(Result)
+                self?.handleResult(Result) ///Error Handling
             })
         .store(in: &subscriptions)
         ///Initiating  data fetch
@@ -136,6 +136,11 @@ extension MLMoviewListSceneView {
         btnNext.publisher(for: \.isEnabled).sink {[unowned self] toggle in
             self.btnNext.backgroundColor = toggle ? .SFThemeSelectionColor : .lightGray }
             .store(in: &subscriptions)
+        ///Feeding master data source
+        viewModel?.$selectedList.receive(on: DispatchQueue.main).sink(receiveValue: { [weak self] items in
+               self?.selectedList = items
+           })
+           .store(in: &subscriptions)
     }
     func bindDataSource () {
         ///Feeding master data source
@@ -152,7 +157,7 @@ extension MLMoviewListSceneView {
     }
     ///Fetching favorite movies List
     func getFavorite(){
-        guard let VM = viewModel else {
+        guard let VM = self.viewModel else {
             return
         }
         if VM.favoriteList.isEmpty {
@@ -165,8 +170,11 @@ extension MLMoviewListSceneView {
 // MARK: Routing
 extension MLMoviewListSceneView {
     @objc func pressed() {
-        let vc = MLMoviesDetailsViewSceneView() as UIViewController//change this to your class name
-        self.present(UINavigationController(rootViewController: vc), animated: true, completion: nil)
+        guard let vm = viewModel else {
+            return
+        }
+        let detailsVc =  vm.prepareMoviesDetailsView(selectedList)
+        self.present(UINavigationController(rootViewController: detailsVc), animated: true, completion: nil)
     }
 }
 // MARK: TableView delegates and datasource methods
@@ -214,16 +222,13 @@ extension MLMoviewListSceneView {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let section:moviesSection = moviesSection(rawValue: indexPath.section) ?? .NA
         let cell = tableView.dequeueReusableCell(withIdentifier: UITableViewCell.typeName, for: indexPath)
-        guard let VM = viewModel else {
-            return cell
-        }
         switch section {
         case .FAVORITE:
             return getFavoriteCell(indexPath, tableView)
         case .WATCHED:
-            return getMoviesCell(indexPath, tableView, VM.moviesWatched)
+            return getMoviesCell(indexPath, tableView, moviesWatched)
         case .TOWATCH:
-            return getMoviesCell(indexPath, tableView, VM.moviesToWatch)
+            return getMoviesCell(indexPath, tableView, moviesToWatch)
         default:
             return cell
         }
