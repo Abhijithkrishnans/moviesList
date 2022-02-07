@@ -15,9 +15,9 @@ class MLFavoriteMovieCell: UICollectionViewCell {
     fileprivate lazy var favBgView:UIView = {
         let bg:UIView = UIView()
         bg.backgroundColor = .SFThemeColor
-        bg.layer.cornerRadius = 10
+        bg.layer.cornerRadius = MLConstants.sizeElements.commonCornerRadius
         bg.clipsToBounds = true
-        bg.layer.borderWidth = 2
+        bg.layer.borderWidth = MLConstants.sizeElements.commonBorderWidth
         return bg
     }()
     
@@ -38,6 +38,7 @@ class MLFavoriteMovieCell: UICollectionViewCell {
         bg.textAlignment = .center
         bg.numberOfLines = 0
         bg.textColor = .white
+        bg.lineBreakMode = .byWordWrapping
         return bg
     }()
     lazy var stackView: UIStackView = {
@@ -49,6 +50,7 @@ class MLFavoriteMovieCell: UICollectionViewCell {
         sv.addArrangedSubview(favTitle)
         return sv
     }()
+    //MARK: Initializers
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -60,20 +62,30 @@ class MLFavoriteMovieCell: UICollectionViewCell {
         emptyView.addSubview(favImageView, anchors: [.height(60),.width(60),.centerX(0),.centerY(0)])
     }
 }
+
+//MARK: Common Helpers
 extension MLFavoriteMovieCell {
     func prepareCell(model: MLMoviesListModel?) {
-        favTitle.text = model?.original_title ?? ""
+        favTitle.text = model?.original_title ?? MLConstants.fieldNames.empty
         if model?.isSelected ?? false {
             favBgView.layer.borderColor = UIColor.SFThemeSelectionColor.cgColor
         }else {
             favBgView.layer.borderColor = UIColor.clear.cgColor
         }
         favImageView.sd_imageIndicator = SDWebImageActivityIndicator.gray
-        guard let urlBuilder:URL = URL(string: "https://\(MLConstants.networking.singleImagebaseURL)\(model?.backdrop_path ?? "")") else {
-            return
-        }
-        favImageView.sd_setImage(with:urlBuilder, placeholderImage: UIImage(named: "placeholder"))
-    
+        guard let url = buildURL(input: .fetchImage(model?.poster_path)) else {return}
+        favImageView.sd_setImage(with:url, placeholderImage: UIImage(named: "placeholder"))
     }
+    func buildURL(input:MLWorker.API?) -> URL? {
+        var url:URL?
+        do{
+            guard let urlBuilder:URL = URL(string: try input?.buildUrlString() ?? MLConstants.fieldNames.empty) else {
+                return nil
+            }
+            url = urlBuilder
+        }catch{}
+        return url
+    }
+    
     
 }

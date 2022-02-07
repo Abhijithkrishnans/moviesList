@@ -7,17 +7,28 @@
 
 import UIKit
 import Combine
-
-class MLMoviesDetailsViewSceneView: UIViewController {
+protocol MLMoviewsDetailsViewProtocol:AnyObject {
+    ///Binding Interfaces
+    var subscriptions:Set<AnyCancellable> { get set }
+    var loadDetailsSubject:PassthroughSubject<Void,Never>{get set}
+    var viewModel:MLDetailsViewModel? {get set}
+    
+    ///Data Source Interfaces
+    associatedtype moviesListType
+    var moviesList: [moviesListType]? { get set }
+}
+class MLMoviesDetailsViewSceneView: UIViewController,MLMoviewsDetailsViewProtocol {
     
     //MARK: Binding Properties
     var subscriptions = Set<AnyCancellable>()
-    private var loadDetailsSubject = PassthroughSubject<Void,Never>()
+    internal var loadDetailsSubject = PassthroughSubject<Void,Never>()
     var viewModel:MLDetailsViewModel?
     
     //MARK: Common Properties
     var detailsSections:[detailsSection] = [.POSTER,.DETAILS]
-    var moviesList: [MLMoviesListModel]?
+    var moviesList: [moviesListType]?
+    typealias moviesListType = MLMoviesListModel
+    
     //MARK: UIControls declarations
     //Define TableView
     lazy var moviesListMasterTable: UITableView = {
@@ -127,5 +138,12 @@ extension MLMoviesDetailsViewSceneView {
         let cell = tableView.dequeueReusableCell(withIdentifier: MLDetailsMovieCell.typeName, for: indexPath) as! MLDetailsMovieCell
         cell.prepareCell(model: moviesList?.first)
         return cell
+    }
+}
+extension MLMoviesDetailsViewSceneView {
+    enum detailsSection:Int {
+        case POSTER = 0
+        case DETAILS = 1
+        case NA = 3
     }
 }

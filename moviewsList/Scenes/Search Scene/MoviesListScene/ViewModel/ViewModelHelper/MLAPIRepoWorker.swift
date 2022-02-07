@@ -31,7 +31,6 @@ extension MLWorker {
       return movies
             .map {$0.results ?? []}
             .mapError{$0 as Error}
-//            .print("Response")
             .eraseToAnyPublisher()
     }
     

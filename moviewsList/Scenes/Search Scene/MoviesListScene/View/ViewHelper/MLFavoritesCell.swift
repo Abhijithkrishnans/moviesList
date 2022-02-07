@@ -10,12 +10,13 @@ import Combine
 class MLFavoritesCell: UITableViewCell {
     //MARK: Common Properties
     var moviesFavorites: [MLMoviesListModel]?
+    
     //MARK: UIControls declarations
     //Define CollectionView
     lazy var flowLayout:UICollectionViewFlowLayout = {
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets.zero
-        layout.itemSize = CGSize(width: 120, height: 150)
+        layout.itemSize = CGSize(width: MLConstants.sizeElements.favpriteCellWidth, height: MLConstants.sizeElements.favpriteCellHeight)
         layout.scrollDirection = .horizontal
        return layout
    }()
@@ -25,11 +26,11 @@ class MLFavoritesCell: UITableViewCell {
        cv.setCollectionViewLayout(self.flowLayout, animated: true)
        cv.dataSource = self
        cv.delegate = self
-       cv.backgroundColor = .black
+       cv.backgroundColor = .SFBGThemeColor
        cv.register(MLFavoriteMovieCell.self, forCellWithReuseIdentifier: MLFavoriteMovieCell.typeName)
        return cv
    }()
-    // Events
+    /// Events
     var cellSelected: AnyPublisher<IndexPath, Never> {
         favoriteCellSelectedSubject.eraseToAnyPublisher()
     }
@@ -52,7 +53,7 @@ class MLFavoritesCell: UITableViewCell {
 extension MLFavoritesCell {
     //Initialization for all elements
     private func initializeView() {
-        self.contentView.addSubview(moviesFavList, anchors: [.top(0),.leading(0),.trailing(0),.height(150),.bottom(0)])
+        self.contentView.addSubview(moviesFavList, anchors: [.top(0),.leading(0),.trailing(0),.height(CGFloat(MLConstants.sizeElements.favpriteCellHeight)),.bottom(0)])
     }
     func prepareCell(FavoriteList: [MLMoviesListModel]?) {
         self.moviesFavorites = FavoriteList
@@ -63,7 +64,8 @@ extension MLFavoritesCell {
 extension MLFavoritesCell {
     func getCellAlignmentInsets(_ collectionView: UICollectionView,_ section: Int)-> UIEdgeInsets{
         if moviesFavorites?[safeBound:section]?.isDetails == true  {
-            let totalCellWidth = 120 * collectionView.numberOfItems(inSection: 0)
+            /// Aligning Movie Cell to center for details scene
+            let totalCellWidth = MLConstants.sizeElements.favpriteCellWidth * collectionView.numberOfItems(inSection: 0)
             let totalSpacingWidth = 5 * (collectionView.numberOfItems(inSection: 0) - 1)
 
             let leftInset = (collectionView.layer.frame.size.width - CGFloat(totalCellWidth + totalSpacingWidth)) / 2

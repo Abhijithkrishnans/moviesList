@@ -71,5 +71,11 @@ enum MLConstants {
         
         static let themeDetailsTitilesize:CGFloat = 12
         static let themeDetailsValuesize:CGFloat = 18
+        
+        static let favpriteCellHeight = 150
+        static let favpriteCellWidth = 120
+        
+        static let imageViewHeight = 50
+        static let imageViewHeightWidth = 50
     }
 }

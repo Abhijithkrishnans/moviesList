@@ -12,23 +12,29 @@ extension MLWorker {
     enum API {
         case fetchMoviesList
         case fetchFavoriteList
+        case fetchImage(String?)
     }
 }
 extension MLWorker.API:MLAPICall {
     //** Configure each API attributes based on API enumeration **
     
     var path: String {
-        MLConstants.networking.baseURL
+        switch self {
+        case .fetchMoviesList,.fetchFavoriteList:
+            return MLConstants.networking.baseURL
+        case .fetchImage(_):
+            return MLConstants.networking.singleImagebaseURL
+        }
     }
     var method: String {
         switch self {
-        case .fetchMoviesList,.fetchFavoriteList:
+        case .fetchMoviesList,.fetchFavoriteList,.fetchImage(_):
             return MLConstants.networking.GET
         }
     }
     var headers: [String : String]? {
         switch self {
-        case .fetchMoviesList,.fetchFavoriteList:
+        case .fetchMoviesList,.fetchFavoriteList,.fetchImage(_):
             return ["Accept":"application/json"]
         }
     }
@@ -37,6 +43,9 @@ extension MLWorker.API:MLAPICall {
         //** Getting micro service as input **
         case .fetchMoviesList,.fetchFavoriteList:
             return MLConstants.microServices.movies
+        case .fetchImage(let endMservice):
+            guard let mservice = endMservice else {return MLConstants.fieldNames.empty}
+            return mservice
         }
     }
     var microServiceMethod:String {
@@ -46,6 +55,8 @@ extension MLWorker.API:MLAPICall {
             return MLConstants.microServices.method.list
         case .fetchFavoriteList:
             return MLConstants.microServices.method.favorites
+        case .fetchImage(_):
+            return MLConstants.fieldNames.empty
         }
     }
 }
@@ -53,12 +64,18 @@ extension MLWorker.API{
     // ** Build Request body **
     func body()throws -> Data? {
         switch self {
-        case .fetchMoviesList,.fetchFavoriteList:
+        case .fetchMoviesList,.fetchFavoriteList,.fetchImage(_):
             return nil
         }
     }
     // ** Build final URL string **
     func buildUrlString() throws -> String {
-        return "https://\(path)/\(microService)/\(microServiceMethod)"
+        switch self {
+        case .fetchMoviesList,.fetchFavoriteList:
+            return "https://\(path)/\(microService)/\(microServiceMethod)"
+        case .fetchImage(_):
+            return "https://\(path)\(microService)"
+        }
+
     }
 }

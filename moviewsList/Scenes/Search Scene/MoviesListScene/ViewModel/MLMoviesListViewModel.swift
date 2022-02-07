@@ -108,6 +108,8 @@ extension MLMoviesListViewModel {
             self.extrackFavoriteList(favlist: results) /// Bifurcating Favorite list from master
             self.reloadMoviesListSubject.send(completion: .finished) /// Final Feedback to View
             break
+        default:
+            break
         }
     }
     private func extrackFavoriteList(favlist:[MLMoviesListModel]) {

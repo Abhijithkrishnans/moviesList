@@ -14,9 +14,9 @@ class MLMovieCell: UITableViewCell {
     fileprivate lazy var favBgView:UIView = {
         let bg:UIView = UIView()
         bg.backgroundColor = .SFThemeColor
-        bg.layer.cornerRadius = 10
+        bg.layer.cornerRadius = MLConstants.sizeElements.commonCornerRadius
         bg.clipsToBounds = true
-        bg.layer.borderWidth = 2
+        bg.layer.borderWidth = MLConstants.sizeElements.commonBorderWidth
         return bg
     }()
     
@@ -28,7 +28,7 @@ class MLMovieCell: UITableViewCell {
     fileprivate lazy var favImageView:UIImageView = {
         let bg:UIImageView = UIImageView()
         bg.backgroundColor = .red
-        bg.layer.cornerRadius = 25
+        bg.layer.cornerRadius = CGFloat(MLConstants.sizeElements.imageViewHeight/2)
         bg.clipsToBounds = true
         return bg
     }()
@@ -48,6 +48,7 @@ class MLMovieCell: UITableViewCell {
         sv.addArrangedSubview(movieTitle)
         return sv
     }()
+    //MARK: Initializers
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -56,23 +57,13 @@ class MLMovieCell: UITableViewCell {
         
         self.contentView.addSubview(favBgView, anchors: [.top(5),.leading(16),.trailing(-16),.bottom(-5),.height(70)])
         favBgView.addSubview(stackView, anchors: [.top(0),.leading(0),.trailing(0),.bottom(0)])
-        emptyView.addSubview(favImageView, anchors: [.height(50),.width(50),.centerX(0),.centerY(0)])
+        emptyView.addSubview(favImageView, anchors: [.height(CGFloat(MLConstants.sizeElements.imageViewHeight)),.width(CGFloat(MLConstants.sizeElements.imageViewHeight)),.centerX(0),.centerY(0)])
         emptyView.widthAnchor.constraint(equalTo: stackView.widthAnchor, multiplier: 0.2).isActive = true
-        self.contentView.backgroundColor = .black
+        self.contentView.backgroundColor = .SFBGThemeColor
     }
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-
 }
+
+//MARK: Common Helpers
 extension MLMovieCell {
     func prepareCell(model: MLMoviesListModel?) {
        bindData(model: model)
@@ -81,15 +72,17 @@ extension MLMovieCell {
         movieTitle.text = model?.original_title ?? ""
         favBgView.layer.borderColor = (model?.isSelected ?? false) ? UIColor.SFThemeSelectionColor.cgColor : UIColor.clear.cgColor
         favImageView.sd_imageIndicator = SDWebImageActivityIndicator.gray
-        guard let url = buildURL(inputStr: model?.backdrop_path) else {
-            return
-        }
+        guard let url = buildURL(input: .fetchImage(model?.poster_path)) else {return}
         favImageView.sd_setImage(with:url, placeholderImage: UIImage(named: "placeholder"))
     }
-    func buildURL(inputStr:String?) -> URL? {
-        guard let urlBuilder:URL = URL(string: "https://\(MLConstants.networking.singleImagebaseURL)\(inputStr ?? "")") else {
-            return nil
-        }
-        return urlBuilder
+    func buildURL(input:MLWorker.API?) -> URL? {
+        var url:URL?
+        do{
+            guard let urlBuilder:URL = URL(string: try input?.buildUrlString() ?? MLConstants.fieldNames.empty) else {
+                return nil
+            }
+            url = urlBuilder
+        }catch{}
+        return url
     }
 }

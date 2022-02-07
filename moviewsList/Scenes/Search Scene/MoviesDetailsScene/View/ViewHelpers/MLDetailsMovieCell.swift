@@ -117,10 +117,3 @@ extension MLDetailsMovieCell {
         return [NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: UIFont(name: font, size: size) ?? UIFont()]
     }
 }
-extension MLMoviesDetailsViewSceneView {
-    enum detailsSection:Int {
-        case POSTER = 0
-        case DETAILS = 1
-        case NA = 3
-    }
-}

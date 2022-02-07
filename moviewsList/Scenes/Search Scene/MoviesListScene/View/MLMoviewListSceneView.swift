@@ -8,10 +8,22 @@
 import UIKit
 import Combine
 import SDWebImage
-class MLMoviewListSceneView: UIViewController,UITableViewDelegate,UITableViewDataSource {
+protocol MLMoviewsListViewProtocol:AnyObject {
+    ///Binding Interfaces
+    var subscriptions:Set<AnyCancellable> { get set }
+    var loadMoviesSubject:PassthroughSubject<Void,Never>{get set}
+    var viewModel:MLMoviesListViewModel? {get set}
+    
+    ///Data Source Interfaces
+    var moviesFavorite: [MLMoviesListModel]? { get set }
+    var moviesAll: [MLMoviesListModel]? { get set }
+    var selectedList: [MLMoviesListModel]? { get set }
+
+}
+class MLMoviewListSceneView: UIViewController,MLMoviewsListViewProtocol,UITableViewDelegate,UITableViewDataSource {
     //MARK: Binding Properties
     var subscriptions = Set<AnyCancellable>()
-    private var loadMoviesSubject = PassthroughSubject<Void,Never>()
+    internal var loadMoviesSubject = PassthroughSubject<Void,Never>()
     var viewModel:MLMoviesListViewModel?
     
     //MARK: Common Properties
@@ -86,6 +98,7 @@ extension MLMoviewListSceneView {
 
     }
 }
+//MARK: Result/Error Handler
 extension MLMoviewListSceneView {
     func handleResult(_ result:Result<Void, Error>) {
         view.sd_imageIndicator?.stopAnimatingIndicator()
