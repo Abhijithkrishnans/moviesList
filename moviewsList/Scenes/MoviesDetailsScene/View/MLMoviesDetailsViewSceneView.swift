@@ -51,7 +51,9 @@ class MLMoviesDetailsViewSceneView: UIViewController,MLMoviewsDetailsViewProtoco
         let btn = UIButton(type: .custom)
         btn.setImage(UIImage(systemName: "multiply.circle.fill"), for: .normal)
         btn.frame = CGRect(x: 0, y: 0, width: 25, height: 25)
-        btn.addTarget(self, action: #selector(self.cancel), for: .touchUpInside)
+        btn.addAction(UIAction(title: MLConstants.fieldNames.empty, handler: { [weak self] _ in
+            self?.cancel()
+        }), for: .touchUpInside)
         return btn
     }()
     ///Define next button
@@ -95,7 +97,7 @@ class MLMoviesDetailsViewSceneView: UIViewController,MLMoviewsDetailsViewProtoco
 
 //MARK: UIAction Handlers
 extension MLMoviesDetailsViewSceneView {
-    @objc func cancel() {
+    func cancel() {
         self.dismiss(animated: true) {
         }
     }

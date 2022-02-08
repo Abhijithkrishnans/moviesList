@@ -104,19 +104,3 @@ extension MLError.badAccessInstance:LocalizedError {
         return "\(String(describing: type(of: self))).\(String(describing: self)) (\(MLConstants.fieldNames.code) \((self as NSError).code))"
     }
 }
-//// MARK: Image Result
-//enum SFImageResult{
-//    case Success([SFImageEssentialDataModelProtocol])
-//    case Failure(Error)
-//}
-//// MARK: URL Result
-//extension SFImageResult {
-//    enum URLResult {
-//        case Success(URL)
-//        case Failure(Error)
-//    }
-//    enum HistoryResult {
-//        case Success([SearchHistoryResultProtocol])
-//        case Failure(Error)
-//    }
-//}

@@ -7,7 +7,6 @@
 
 import Foundation
 struct DIContainer {
-
     static func bootstrapMoviesListView() -> MLMoviewListSceneView {
         //MARK: Initialise components.
         let view = MLMoviewListSceneView()

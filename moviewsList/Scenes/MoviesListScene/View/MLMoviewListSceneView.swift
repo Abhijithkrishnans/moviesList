@@ -67,7 +67,9 @@ class MLMoviewListSceneView: UIViewController,MLMoviewsListViewProtocol,UITableV
         btn.layer.borderWidth = MLConstants.sizeElements.commonBorderWidth
         btn.layer.borderColor = UIColor.darkGray.cgColor
         btn.setTitle(MLConstants.fieldNames.Next, for: .normal)
-        btn.addTarget(self, action: #selector(pressed), for: .touchUpInside)
+        btn.addAction(UIAction(title: MLConstants.fieldNames.empty, handler: { [weak self] _ in
+            self?.pressed()
+        }), for: .touchUpInside)
         btn.isEnabled = false
         return btn
     }()
@@ -182,7 +184,7 @@ extension MLMoviewListSceneView {
 
 // MARK: Routing
 extension MLMoviewListSceneView {
-    @objc func pressed() {
+     func pressed() {
         guard let vm = viewModel else {
             return
         }
