@@ -18,11 +18,15 @@ protocol MLMoviesListProtocol {
     associatedtype moviesListType
     var moviesList: [moviesListType]{get set}
     var favoriteList: [moviesListType]{get set}
+    var selectedList: [moviesListType]{get set}
     
     //** View Model connection to expose the fetched results to pipeline **
     var dataManager: MLAPIRepoWorker { get set }
     
     func setSelection(_ model:MLMoviesListModel?, isFavorite:Bool)
+    init(_ datamanager:MLAPIRepoWorker)
+    var loadData: AnyPublisher<Void, Never> {get set}
+    var subscriptions:Set<AnyCancellable>{get set}
     
 }
 class MLMoviesListViewModel: MLMoviesListProtocol {
@@ -31,7 +35,7 @@ class MLMoviesListViewModel: MLMoviesListProtocol {
     var dataManager: MLAPIRepoWorker
     
     ///Contain all subscriptions
-    private var subscriptions = Set<AnyCancellable>()
+    var subscriptions = Set<AnyCancellable>()
     
     ///Data source for the Movies List table view.
     @Published var moviesList: [moviesListType] = [moviesListType]()
@@ -39,7 +43,7 @@ class MLMoviesListViewModel: MLMoviesListProtocol {
     @Published var selectedList: [moviesListType] = [moviesListType]()
     
     // MARK: Input
-    private var loadData: AnyPublisher<Void, Never> = PassthroughSubject<Void, Never>().eraseToAnyPublisher()
+    var loadData: AnyPublisher<Void, Never> = PassthroughSubject<Void, Never>().eraseToAnyPublisher()
     
     // MARK: Output
     @Published var isMovieSelected: Bool = false
@@ -49,7 +53,7 @@ class MLMoviesListViewModel: MLMoviesListProtocol {
     private let reloadMoviesListSubject = PassthroughSubject<Result<Void, Error>, Never>()
     
     ///Initializers
-    init(_ datamanager:MLAPIRepoWorker) {
+    required init(_ datamanager:MLAPIRepoWorker) {
         dataManager = datamanager
     }
 }

@@ -16,10 +16,12 @@ protocol MLAPIRepoWorker {
     //** Interface used for performing API call for fetching recpies
     func fetchMoviesList(endpoint apiEp:MLWorker.API)-> AnyPublisher<[MLMoviesListModel], Error>
     
+    init(_ nw:MLNetworkingProtocol)
+    
 }
 class MLWorker: NSObject, MLAPIRepoWorker {
     var networking:MLNetworkingProtocol
-    init(_ nw:MLNetworkingProtocol) {
+    required init(_ nw:MLNetworkingProtocol) {
         networking = nw
     }
 }

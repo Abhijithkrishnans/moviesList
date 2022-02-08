@@ -12,7 +12,8 @@ protocol MLMoviewsListViewProtocol:AnyObject {
     ///Binding Interfaces
     var subscriptions:Set<AnyCancellable> { get set }
     var loadMoviesSubject:PassthroughSubject<Void,Never>{get set}
-    var viewModel:MLMoviesListViewModel? {get set}
+    associatedtype moviesListType
+    var viewModel:moviesListType? {get set}
     
     ///Data Source Interfaces
     var moviesFavorite: [MLMoviesListModel]? { get set }
@@ -164,7 +165,8 @@ extension MLMoviewListSceneView {
            })
            .store(in: &subscriptions)
         ///Feeding favorite data source
-        viewModel?.$favoriteList.receive(on: DispatchQueue.main).sink(receiveValue: { [weak self] items in
+        viewModel?.$favoriteList.receive(on: DispatchQueue.main)
+            .sink(receiveValue: { [weak self] items in
                self?.moviesFavorite = items
                self?.moviesListMasterTable.reloadData()
            })

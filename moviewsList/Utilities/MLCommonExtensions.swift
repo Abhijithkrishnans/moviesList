@@ -68,3 +68,20 @@ extension Collection {
         return indices.contains(index) ? self[index] : nil
     }
 }
+extension Sequence {
+    func isSorted(by areInIncreasingOrder: (Element, Element) throws -> Bool)
+        rethrows -> Bool {
+        var it = makeIterator()
+        guard var previous = it.next() else { return true }
+        
+        while let current = it.next() {
+            if try !areInIncreasingOrder(previous, current) &&
+                areInIncreasingOrder(current, previous) {
+                return false
+            }
+            previous = current
+        }
+        return true
+    }
+}
+

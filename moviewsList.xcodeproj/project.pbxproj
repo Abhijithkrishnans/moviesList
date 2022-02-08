@@ -17,6 +17,11 @@
 		472595A027AB114200B1017A /* moviewsListTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4725959F27AB114200B1017A /* moviewsListTests.swift */; };
 		472595AA27AB114200B1017A /* moviewsListUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472595A927AB114200B1017A /* moviewsListUITests.swift */; };
 		472595AC27AB114200B1017A /* moviewsListUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472595AB27AB114200B1017A /* moviewsListUITestsLaunchTests.swift */; };
+		4751252327B25D4B008B908D /* MoviesListTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4751252227B25D4B008B908D /* MoviesListTest.swift */; };
+		4751252527B25DB6008B908D /* MLMoviesListSceneViewMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4751252427B25DB6008B908D /* MLMoviesListSceneViewMock.swift */; };
+		4751252727B25E95008B908D /* MLMoviesListViewModelMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4751252627B25E95008B908D /* MLMoviesListViewModelMock.swift */; };
+		4751252927B26081008B908D /* MoviesWorkerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4751252827B26081008B908D /* MoviesWorkerMock.swift */; };
+		4751252C27B26144008B908D /* MoviesListMock.json in Resources */ = {isa = PBXBuildFile; fileRef = 4751252B27B26144008B908D /* MoviesListMock.json */; };
 		4754987F27B1C12100A5C882 /* MLAPIRepoWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4754986D27B1C12100A5C882 /* MLAPIRepoWorker.swift */; };
 		4754988027B1C12100A5C882 /* MLAPIWorker+Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4754986E27B1C12100A5C882 /* MLAPIWorker+Networking.swift */; };
 		4754988127B1C12100A5C882 /* MLMoviesListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4754986F27B1C12100A5C882 /* MLMoviesListViewModel.swift */; };
@@ -74,6 +79,12 @@
 		472595A527AB114200B1017A /* moviewsListUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = moviewsListUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		472595A927AB114200B1017A /* moviewsListUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = moviewsListUITests.swift; sourceTree = "<group>"; };
 		472595AB27AB114200B1017A /* moviewsListUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = moviewsListUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		4751252227B25D4B008B908D /* MoviesListTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesListTest.swift; sourceTree = "<group>"; };
+		4751252427B25DB6008B908D /* MLMoviesListSceneViewMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MLMoviesListSceneViewMock.swift; sourceTree = "<group>"; };
+		4751252627B25E95008B908D /* MLMoviesListViewModelMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MLMoviesListViewModelMock.swift; sourceTree = "<group>"; };
+		4751252827B26081008B908D /* MoviesWorkerMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesWorkerMock.swift; sourceTree = "<group>"; };
+		4751252B27B26144008B908D /* MoviesListMock.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MoviesListMock.json; sourceTree = "<group>"; };
+		4751252D27B261EA008B908D /* FavoriteMock.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = FavoriteMock.json; sourceTree = "<group>"; };
 		4754986D27B1C12100A5C882 /* MLAPIRepoWorker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MLAPIRepoWorker.swift; sourceTree = "<group>"; };
 		4754986E27B1C12100A5C882 /* MLAPIWorker+Networking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MLAPIWorker+Networking.swift"; sourceTree = "<group>"; };
 		4754986F27B1C12100A5C882 /* MLMoviesListViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MLMoviesListViewModel.swift; sourceTree = "<group>"; };
@@ -159,6 +170,7 @@
 				47AA00DE27AC545D00C399CC /* DBHandler */,
 				47AA00E127AC545D00C399CC /* DIContainer */,
 				47AA00E827AC545D00C399CC /* Error */,
+				4751252A27B26144008B908D /* Resources */,
 				47AA00E627AC545D00C399CC /* Macros */,
 				47AA00EE27AC545E00C399CC /* Networking */,
 				47AA00EA27AC545D00C399CC /* Scenes */,
@@ -171,6 +183,7 @@
 			isa = PBXGroup;
 			children = (
 				4725959F27AB114200B1017A /* moviewsListTests.swift */,
+				4751252127B25D09008B908D /* MoviesListTest */,
 			);
 			path = moviewsListTests;
 			sourceTree = "<group>";
@@ -182,6 +195,26 @@
 				472595AB27AB114200B1017A /* moviewsListUITestsLaunchTests.swift */,
 			);
 			path = moviewsListUITests;
+			sourceTree = "<group>";
+		};
+		4751252127B25D09008B908D /* MoviesListTest */ = {
+			isa = PBXGroup;
+			children = (
+				4751252227B25D4B008B908D /* MoviesListTest.swift */,
+				4751252427B25DB6008B908D /* MLMoviesListSceneViewMock.swift */,
+				4751252627B25E95008B908D /* MLMoviesListViewModelMock.swift */,
+				4751252827B26081008B908D /* MoviesWorkerMock.swift */,
+			);
+			path = MoviesListTest;
+			sourceTree = "<group>";
+		};
+		4751252A27B26144008B908D /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				4751252B27B26144008B908D /* MoviesListMock.json */,
+				4751252D27B261EA008B908D /* FavoriteMock.json */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		4754986A27B1C12100A5C882 /* MoviesListScene */ = {
@@ -447,6 +480,7 @@
 				4725959527AB114200B1017A /* LaunchScreen.storyboard in Resources */,
 				4725959227AB114200B1017A /* Assets.xcassets in Resources */,
 				4725958D27AB113E00B1017A /* Main.storyboard in Resources */,
+				4751252C27B26144008B908D /* MoviesListMock.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -504,6 +538,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4751252727B25E95008B908D /* MLMoviesListViewModelMock.swift in Sources */,
+				4751252927B26081008B908D /* MoviesWorkerMock.swift in Sources */,
+				4751252527B25DB6008B908D /* MLMoviesListSceneViewMock.swift in Sources */,
+				4751252327B25D4B008B908D /* MoviesListTest.swift in Sources */,
 				472595A027AB114200B1017A /* moviewsListTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
