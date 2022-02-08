@@ -27,7 +27,6 @@ class MLMovieCell: UITableViewCell {
     
     fileprivate lazy var favImageView:UIImageView = {
         let bg:UIImageView = UIImageView()
-        bg.backgroundColor = .red
         bg.layer.cornerRadius = CGFloat(MLConstants.sizeElements.imageViewHeight/2)
         bg.clipsToBounds = true
         return bg

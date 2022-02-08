@@ -16,9 +16,11 @@ class MLMoviesListSceneViewMock: MLMoviewsListViewProtocol {
     var moviesFavorite: [MLMoviesListModel]?
     var moviesAll: [MLMoviesListModel]?
     var selectedList: [MLMoviesListModel]?
+    
+    ///Convenience properties for checking method invocation
     var exp:XCTestExpectation?
     var selectionExp:XCTestExpectation?
-    var calledMethods = [CalledMethods]() ///Convenience property for checking method invocation
+    var calledMethods = [CalledMethods]()
     init(){}
 }
 extension MLMoviesListSceneViewMock {

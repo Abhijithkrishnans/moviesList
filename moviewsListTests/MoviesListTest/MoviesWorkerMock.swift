@@ -19,13 +19,13 @@ class MoviesWorkerMock: MLAPIRepoWorker {
         var mockData = Data()
         switch apiEp {
         case .fetchMoviesList:
-            guard let data = MLUtilities().getDataFromBundle(WithName: "MoviesListMock", ext: "json") else {
+            guard let data = MLUtilities.getDataFromBundle(WithName: "MoviesListMock", ext: "json") else {
                 return Fail(error: MLError.requestBuildFailure.urlCreationFailed).eraseToAnyPublisher()
             }
             mockData = data
             break
         case .fetchFavoriteList:
-            guard let data = MLUtilities().getDataFromBundle(WithName: "MoviesListMock", ext: "json") else {
+            guard let data = MLUtilities.getDataFromBundle(WithName: "MoviesListMock", ext: "json") else {
                 return Fail(error: MLError.requestBuildFailure.urlCreationFailed).eraseToAnyPublisher()
             }
             mockData = data

@@ -11,11 +11,12 @@ protocol MLMoviewsDetailsViewProtocol:AnyObject {
     ///Binding Interfaces
     var subscriptions:Set<AnyCancellable> { get set }
     var loadDetailsSubject:PassthroughSubject<Void,Never>{get set}
-    var viewModel:MLDetailsViewModel? {get set}
+    associatedtype moviesDetailsVMType
+    var viewModel:moviesDetailsVMType? {get set}
     
     ///Data Source Interfaces
-    associatedtype moviesListType
-    var moviesList: [moviesListType]? { get set }
+    associatedtype moviesDetailsType
+    var moviesList: [moviesDetailsType]? { get set }
 }
 class MLMoviesDetailsViewSceneView: UIViewController,MLMoviewsDetailsViewProtocol {
     

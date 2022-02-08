@@ -28,7 +28,6 @@ class MLFavoriteMovieCell: UICollectionViewCell {
     
     fileprivate lazy var favImageView:UIImageView = {
         let bg:UIImageView = UIImageView()
-        bg.backgroundColor = .red
         bg.layer.cornerRadius = 30
         bg.clipsToBounds = true
         return bg
